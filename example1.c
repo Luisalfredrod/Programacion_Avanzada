@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 	printf("value of x = %li\n", x);
 	printf("memory address (&x) = %p\n", (&x));
 	printf("pointer p = %p\n\n\n", p);
-	
+	//Change the value of x
 	(*p) = 10;
 	printf("modifying through p\n");
 	printf("value of x = %li\n", x);

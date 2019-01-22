@@ -1,3 +1,16 @@
+/*----------------------------------------------------------------
+
+*
+
+* Programación avanzada: Apuntadores y arreglos
+
+* Fecha: 22-Ene-2019
+
+* Autor: A01701260 Luis Alfredo Rodriguez Santos
+
+*
+
+*--------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -58,21 +71,23 @@ void set(Matrix *M, uint row, uint col, double val) {
 
 void matrix_mult(Matrix *A, Matrix *B, Matrix *C) {
 	if (A != NULL && B != NULL){
-		if (A->ncols == B->nrows){
-			 int cc = C->ncols;
-			 int cr = C->nrows;
-			 float aux = 0;
-			 
-			 for(int i = 0; i<cr ; i++){
-				 for(int j=0; j<cc; j++){
-					 for(int k=0; k<B->nrows; k++){
-						 aux += (A->data[(A->ncols*i) + k])* (B->data[(B->ncols*k) + j]);
-					 }
-					 
-					 C->data[(C->ncols*i) + j] = aux;
-					 aux = 0;
-				 }
-			 }
+		if ((A->ncols == B->nrows) && (C->nrows == A->nrows) && (C->ncols == B->ncols)){
+			int i, j, k;
+			int c = C->ncols;
+			int r = C->nrows;
+			float acum = 0;
+			for(i = 0; i < r; i++)
+			{
+				for(j = 0; j < c; j++)
+				{
+					for(k = 0; k < B -> nrows; k++)
+					{
+						acum += (A->data[(A->ncols * i) + k]) * (B->data[(B->ncols * k) + j]);
+					}
+				 C->data[(C->ncols * i) + j] = acum;
+				 acum = 0;
+			 	}
+		 	}
 		}else{
 			printf("Matrix A number of cols has to be the same with Matrix B number of rows\n");
 		}

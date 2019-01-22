@@ -44,37 +44,50 @@ void set(Matrix *M, uint row, uint col, double val) {
 	if(M != NULL){
 		uint nrows = M->nrows;
 		uint ncols = M->ncols;
-		if (row > 0 && row < nrows){
-			if (col > 0 && col <ncols){
+		if (row >= 0 && row < nrows){
+			if (col >= 0 && col <ncols){
 				M->data[(ncols*row) + col] = val;
 			}else{
-				printf("Error with cols!");
+				printf("Error with cols!\n");
 			}
 		}else{
-			printf("Error with rows!")
+			printf("Error with rows!\n");
 		}
 	}
 }
 
 void matrix_mult(Matrix *A, Matrix *B, Matrix *C) {
-/****************************************
- * It must be checked that the multiplication can be done 
- * (check the following links:
- * https://es.wikipedia.org/wiki/Multiplicaci%C3%B3n_de_matrices
- * https://www.geogebra.org/m/S6R8A2xD
- * ). If it can not be done, you must display an error message.
- * Remember check for null pointer. 
- * 
- * The multiplication is A x B = C
- ****************************************/
+	if (A != NULL && B != NULL){
+		if (A->ncols == B->nrows){
+			 int cc = C->ncols;
+			 int cr = C->nrows;
+			 float aux = 0;
+			 
+			 for(int i = 0; i<cr ; i++){
+				 for(int j=0; j<cc; j++){
+					 for(int k=0; k<B->nrows; k++){
+						 aux += (A->data[(A->ncols*i) + k])* (B->data[(B->ncols*k) + j]);
+					 }
+					 
+					 C->data[(C->ncols*i) + j] = aux;
+					 aux = 0;
+				 }
+			 }
+		}else{
+			printf("Matrix A number of cols has to be the same with Matrix B number of rows\n");
+		}
+	}else{
+		printf("Matrix A or B is Null\n");
+	}
 }
 
 void free_matrix(Matrix *M) {
-/****************************************
- * If the element that is received is different from NULL, 
- * the space assigned to the array and the structure must be 
- * freed.
- ****************************************/
+	 if(M!=NULL){
+		 free(M->data);
+		free(M);
+	 }else{
+		printf("Error to free matrix NULL\n");
+	 }
 }
 
 

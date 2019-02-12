@@ -2,7 +2,7 @@
 
 *
 
-* Programación avanzada: Manejo de Directorios
+* Programación avanzada: Archivos y directorios
 
 * Fecha: 12-Feb-2019
 

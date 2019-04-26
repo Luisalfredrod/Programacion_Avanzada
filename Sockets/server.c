@@ -13,28 +13,31 @@
 #include <string.h>
 
 void serves_client(int nsfd) {
-	int number_sent, number_guess;
-	int guess, answer;
+	char message_sent[50];
+	char answer[50];
 	
 	srand(getpid());
-	do {
-		guess = 0;
-		number_guess = (rand() % 100) + 1;
-		printf("PID = %i <-> number to  guess = %i\n", getpid(), number_guess);
-		while (!guess) {
-			read(nsfd, &number_sent, sizeof(number_sent));
-			if (number_sent < number_guess) {
-				answer = SMALLER;
-			} else if (number_sent > number_guess) {
-				answer = BIGGER;
-			} else {
-				answer = EQUAL;
-				guess = 1;
-			}
-			write(nsfd, &answer, sizeof(answer));
-		}
-		read(nsfd, &answer, sizeof(answer));
-	} while (answer == CONTINUE);
+	// do {
+	// 	guess = 0;
+	// 	number_guess = (rand() % 100) + 1;
+	// 	printf("PID = %i <-> number to  guess = %i\n", getpid(), number_guess);
+	// 	while (!guess) {
+	// 		read(nsfd, &number_sent, sizeof(number_sent));
+	// 		if (number_sent < number_guess) {
+	// 			answer = SMALLER;
+	// 		} else if (number_sent > number_guess) {
+	// 			answer = BIGGER;
+	// 		} else {
+	// 			answer = EQUAL;
+	// 			guess = 1;
+	// 		}
+	// 		write(nsfd, &answer, sizeof(answer));
+	// 	}
+	// 	read(nsfd, &answer, sizeof(answer));
+	// } while (answer == CONTINUE);
+
+    read(nsfd, &message_sent, sizeof(message_sent));
+    write(nsfd, &message_sent, sizeof(message_sent));
 	close(nsfd);
 }
 

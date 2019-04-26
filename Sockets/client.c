@@ -10,18 +10,20 @@
 *------------------------------------------------------------*/
 
 #include "header.h"
-
+#include "string.h"
 int main(int argc, char* argv[]) {
-    int sfd, number, answer, continuE;
+    int sfd, answer, continuE;
+    char str[50];
+    char ip[16];
 	int port, guess;
 	struct sockaddr_in server_info;
 	
-	if (argc != 3) {
+	if (argc != 2) {
 	    printf("usage: %s ip port\n", argv[0]);
 	    return -1;
 	}
 	
-	port = atoi(argv[2]);
+	port = DEFAULT_PORT;
 	if (port < 5000) {
 		printf("%s: The port must be greater than 5000.\n", argv[0]);
 		return -1;
@@ -31,7 +33,7 @@ int main(int argc, char* argv[]) {
 		perror(argv[0]);
 		return -1;
 	}
-	
+	strcpy(ip,argv[1]);
 	server_info.sin_family = AF_INET;
 	server_info.sin_addr.s_addr = inet_addr(argv[1]);
 	server_info.sin_port = htons(port);
@@ -40,28 +42,29 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 	
-	do {
-		guess = 0;
-		while (!guess) {
-			printf("Give me the number: ");
-			scanf("%i", &number);
+	// do {
+	// 	guess = 0;
+	// 	while (!guess) {
+			printf("Input the message: ");
+            fgets(str,50,stdin);
+			// scanf("%49s", str);
 			
-			write(sfd, &number, sizeof(number));
-			read(sfd, &answer, sizeof(answer));
-			
-			switch (answer) {
-				case SMALLER: printf("The number is smaller.\n"); break;
-				case BIGGER : printf("The number is bigger.\n"); break;
-				default     : guess = 1; break;
-			}
-		}
-		printf("You guessed it! Congratulations!\n");
-		printf("Continue? (0/1)? ");
-		scanf("%i", &continuE);
+			write(sfd, &str, sizeof(str));
+			read(sfd, &str, sizeof(str));
+			fprintf(stdout,"\nServer %s : %s\n",ip,str);
+			// switch (answer) {
+			// 	case SMALLER: printf("The number is smaller.\n"); break;
+			// 	case BIGGER : printf("The number is bigger.\n"); break;
+			// 	default     : guess = 1; break;
+			// }
+		// }
+	// 	printf("You guessed it! Congratulations!\n");
+	// 	printf("Continue? (0/1)? ");
+	// 	scanf("%i", &continuE);
 		
-		answer = (continuE == 1)? CONTINUE : END;
-		write(sfd, &answer, sizeof(answer));
-	} while (continuE == 1);
+	// 	answer = (continuE == 1)? CONTINUE : END;
+	// 	write(sfd, &answer, sizeof(answer));
+	// } while (continuE == 1);
 	close(sfd);
 	return 0;
 }
